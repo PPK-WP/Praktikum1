@@ -1,15 +1,18 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ListController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 // Tamu otomatis diarahkan ke /login oleh middleware auth.
 Route::redirect('/', '/dashboard');
 
-// Dashboard bawaan baseline — P1 menggantinya dengan DashboardController (redirect per role).
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth')->name('dashboard');
+// SRS-001: Dashboard redirect per role (admin → /admin/users, user → /lists).
+Route::get('/dashboard', DashboardController::class)
+    ->middleware('auth')
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -21,6 +24,21 @@ Route::middleware('auth')->group(function () {
 // Route name: lists.index/create/store/show/edit/update/destroy |
 //             tasks.store | tasks.edit | tasks.update | tasks.destroy
 // =====================================================================
+
+Route::middleware('auth')->group(function () {
+    Route::get('/lists', [ListController::class, 'index'])->name('lists.index');
+    Route::get('/lists/create', [ListController::class, 'create'])->name('lists.create');
+    Route::post('/lists', [ListController::class, 'store'])->name('lists.store');
+    Route::get('/lists/{list}', [ListController::class, 'show'])->name('lists.show');
+    Route::get('/lists/{list}/edit', [ListController::class, 'edit'])->name('lists.edit');
+    Route::put('/lists/{list}', [ListController::class, 'update'])->name('lists.update');
+    Route::delete('/lists/{list}', [ListController::class, 'destroy'])->name('lists.destroy');
+
+    Route::post('/lists/{list}/tasks', [TaskController::class, 'store'])->name('tasks.store');
+    Route::get('/lists/{list}/tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
+    Route::put('/lists/{list}/tasks/{task}', [TaskController::class, 'update'])->name('tasks.update');
+    Route::delete('/lists/{list}/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+});
 
 // ---------------------------- akhir [P1] -----------------------------
 
