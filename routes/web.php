@@ -49,6 +49,23 @@ Route::middleware('auth')->group(function () {
 //             admin.users.index/create/store/destroy
 // =====================================================================
 
+Route::middleware('auth')->group(function () {
+    // SRS-005: Task Status
+    Route::patch('/tasks/{task}/toggle', [\App\Http\Controllers\TaskStatusController::class, 'toggle'])->name('tasks.toggle');
+
+    // SRS-006: Collaboration
+    Route::post('/lists/{list}/members', [\App\Http\Controllers\MemberController::class, 'store'])->name('members.store');
+    Route::delete('/lists/{list}/members/{user}', [\App\Http\Controllers\MemberController::class, 'destroy'])->name('members.destroy');
+});
+
+// SRS-008: Admin User Management
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
+    Route::get('/users/create', [\App\Http\Controllers\Admin\UserController::class, 'create'])->name('admin.users.create');
+    Route::post('/users', [\App\Http\Controllers\Admin\UserController::class, 'store'])->name('admin.users.store');
+    Route::delete('/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('admin.users.destroy');
+});
+
 // ---------------------------- akhir [P2] -----------------------------
 
 require __DIR__.'/auth.php';
