@@ -49,6 +49,14 @@ class User extends Authenticatable
             ->withPivot('joined_at');
     }
 
+    /**
+     * Task yang aku buat (aku sebagai pemilik, via tasks.created_by).
+     */
+    public function createdTasks(): HasMany
+    {
+        return $this->hasMany(Task::class, 'created_by');
+    }
+
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
