@@ -72,6 +72,7 @@
                             <th>Task</th>
                             <th>Prioritas</th>
                             <th>Tenggat</th>
+                            <th>Pembuat</th>
                             <th style="width: 120px;">Aksi</th>
                         </tr>
                     </thead>
@@ -98,6 +99,9 @@
                                     {{ $task->due_date->format('d M Y') }}
                                 </td>
                                 <td>
+                                    {{ $task->creator?->name ?? '—' }}
+                                </td>
+                                <td>
                                     <a href="/lists/{{ $list->id }}/tasks/{{ $task->id }}/edit" class="btn btn-outline-primary btn-sm">Edit</a>
                                     <form method="POST" action="/lists/{{ $list->id }}/tasks/{{ $task->id }}" class="d-inline"
                                           onsubmit="return confirm('Yakin ingin menghapus task ini?');">
@@ -117,6 +121,8 @@
             <p class="text-muted">Belum ada task. Tambahkan task pertamamu di atas.</p>
         </div>
     @endif
+
+    @includeIf('lists.partials.activity', ['list' => $list])
 
     @includeIf('lists.partials.members', ['list' => $list])
 </x-app-layout>
