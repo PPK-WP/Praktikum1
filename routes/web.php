@@ -68,4 +68,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
 // ---------------------------- akhir [P2] -----------------------------
 
+// =====================================================================
+// [PR3-P2] MY TASKS & SEARCH — SRS-010 (Programmer 2 Pertemuan 3)
+// Route name: mytasks.index
+// =====================================================================
+
+Route::get('/mytasks', [\App\Http\Controllers\MyTaskController::class, 'index'])
+    ->middleware('auth')
+    ->name('mytasks.index');
+
+// -------------------------- akhir [PR3-P2] ---------------------------
+
 require __DIR__.'/auth.php';

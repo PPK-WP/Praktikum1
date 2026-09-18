@@ -13,6 +13,9 @@
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('lists*') ? 'active' : '' }}" href="/lists">My Workspace</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is('mytasks*') ? 'active' : '' }}" href="/mytasks">Tugas Saya</a>
+                </li>
                 @if (auth()->user()?->isAdmin())
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('admin/users*') ? 'active' : '' }}" href="/admin/users">User Management</a>
