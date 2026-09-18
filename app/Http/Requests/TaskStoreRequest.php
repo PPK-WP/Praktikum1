@@ -30,3 +30,4 @@ class TaskStoreRequest extends FormRequest
         ];
     }
 }
+
